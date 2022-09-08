@@ -1,41 +1,52 @@
-import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import React, {Fragment} from 'react';
+import { ChakraProvider, Box, theme, Input, Button, Heading, Flex, InputGroup, InputRightElement, Divider} from '@chakra-ui/react';
+import { useState, useRef } from 'react';
+import LeftDrawer from './Components/LeftDrawer';
+
+import PrivateRoute from "./PrivateRoute"
+import { AuthProvider } from "./Contexts/AuthContext"
+import { BrowserRouter as BrowserRouter, Routes, Route } from "react-router-dom"
+
+
+import { nanoid } from 'nanoid';  // a library to import random ID's
+import Login from './loginComp/Login';
+import Signup from './loginComp/Signup';
+// import Login from './loginComp2/Login/index';
+
+
 
 function App() {
+
+  
+
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
-    </ChakraProvider>
+          <ChakraProvider theme={theme}>
+            <Flex bgColor={'#F7FAFC'} flexDirection={'column'} width='100%' alignItems={'center'}>
+        <AuthProvider>
+      <BrowserRouter>
+          <Routes>
+            
+          <Route exact path="/login"
+                element={
+                  <PrivateRoute>
+                    <LeftDrawer />
+                  </PrivateRoute>
+                }
+              ></Route>
+              
+              {/* <Route exact path="/" element={<LeftDrawer/>} /> */}
+    
+             <Route exact path="/" element={<Login/>} />
+             <Route exact path="/signup" element={<Signup/>} />
+
+
+    </Routes>
+    </BrowserRouter>
+    </AuthProvider>
+            </Flex>
+          </ChakraProvider>
+
+   
   );
 }
 
